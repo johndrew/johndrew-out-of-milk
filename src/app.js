@@ -4,21 +4,40 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-
-const indexRouter = require('./routes/index');
+const { ApolloServer, gql } = require('apollo-server-express');
+const log = require('./logger');
+const db = require('./data/models');
 
 function createServer() {
-
+  log.info('Creating GraphQL server');
+  const typeDefs = gql`
+    type Query {
+      hello: String
+      items: [Item]
+    }
+    type Item {
+      id: Int
+      name: String
+    }
+  `;
+  
+  // Provide resolver functions for your schema fields
+  const resolvers = {
+    Query: {
+      hello: () => 'Hello world!',
+      items: () => db.Item.findAll(),
+    },
+  };
+  const server = new ApolloServer({ typeDefs, resolvers });
   const app = express();
 
+  log.info('Attaching middleware');
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, 'public')));
-  app.use(bodyParser.json({ type: 'application/*+json' }))
-
-  app.use('/', indexRouter);
+  app.use(bodyParser.json({ type: 'application/*+json' }));
+  server.applyMiddleware({ app });
 
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {
@@ -30,10 +49,9 @@ function createServer() {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
+    log.error(err);
     res.status(err.status || 500);
-    res.render('error');
+    res.send(`An unexpected error occurred: ${err.message}`);
   });
 
   return app;

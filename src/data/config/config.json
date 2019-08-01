@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "outofmilk",
+    "password": "test1234",
+    "database": "outofmilk",
+    "host": "127.0.0.1",
+    "dialect": "postgres"    
+  },
+  "test": {
+    "username": "outofmilk",
+    "password": "test1234",
+    "database": "outofmilk_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"    
+  },
+  "production": {
+    "username": "outofmilk",
+    "password": "test1234",
+    "database": "outofmilk_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "use_env_variable": "DATABASE_URL"
+  }
+}
