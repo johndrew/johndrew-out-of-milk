@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "db:migrate": "sequelize db:migrate",
     "start": "nodemon ./bin/www",
     "test": "NODE_ENV=test jest",
     "test:integ": "NODE_ENV=test jest integ.spec",
