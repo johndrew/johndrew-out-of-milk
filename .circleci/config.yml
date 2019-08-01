@@ -3,6 +3,17 @@ version: 2
 orbs:
   heroku: circleci/heroku@1.0.0
 
+commands:
+  heroku_deploy:
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: "${HEROKU_APP_NAME}"
+      - run:
+          name: DB migrations
+          command: heroku run --app "${HEROKU_APP_NAME}" "yarn db:migrate"
+
 jobs:
   build:
     docker:
@@ -31,18 +42,12 @@ jobs:
   #         name: Deploy Master to Heroku
   #         command: |
   #           git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git HEAD
-  heroku_deploy:
-    executor: heroku/default
+  deploy:
     docker:
       - image: buildpack-deps:trusty
+    executor: heroku/default
     steps:
-      - checkout
-      - heroku/install
-      - heroku/deploy-via-git:
-          app-name: "${HEROKU_APP_NAME}"
-      - run:
-          name: DB migrations
-          command: heroku run --app "${HEROKU_APP_NAME}" "yarn db:migrate"
+      - heroku-deploy
 
 workflows:
   version: 2
