@@ -17,8 +17,9 @@
     "username": "outofmilk",
     "password": "test1234",
     "database": "outofmilk_production",
-    "host": "127.0.0.1",
+    "host": "johndrew-out-of-milk.herokuapp.com",
     "dialect": "postgres",
-    "use_env_variable": "DATABASE_URL"
+    "use_env_variable": "HEROKU_POSTGRESQL_COBALT_URL",
+    "logging": true
   }
 }
