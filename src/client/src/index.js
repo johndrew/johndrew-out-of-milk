@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ApolloClient, { gql } from "apollo-boost";
+import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+const isProd = process.env.NODE_ENV === 'production';
 const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  uri: isProd ? 'johndrew-out-of-milk.herokuapp.com' : "http://localhost:3000/graphql",
 });
 
 ReactDOM.render(
