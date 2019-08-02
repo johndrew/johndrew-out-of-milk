@@ -13,6 +13,19 @@ commands:
       - run:
           name: DB migrations
           command: heroku run --app "${HEROKU_APP_NAME}" "yarn db:migrate"
+  react-build:
+    steps:
+      - run: cd src/client
+      - restore_cache:
+          keys:
+            - v1-client-dependencies-{{ checksum "package.json" }}
+            - v1-client-dependencies-
+      - run: yarn install
+      - run: yarn build
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-client-dependencies-{{ checksum "package.json" }}
 
 jobs:
   build:
@@ -24,19 +37,13 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-            
-            # fallback
             - v1-dependencies-
       - run: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      # todo add cache for react build
-      - run:
-          name: React build
-          command: cd src/client && yarn install && yarn build
+      - react-build
   deploy:
     docker:
       - image: buildpack-deps:trusty
