@@ -8,6 +8,8 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const log = require('./logger');
 const db = require('./data/models');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 function createServer() {
   log.info('Creating GraphQL server');
   const typeDefs = gql`
@@ -50,6 +52,7 @@ function createServer() {
   // add client routes
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.use('/', (req, res) => {
+    if (!isProd) res.set('Access-Control-Allow-Origin', 'localhost:8080');
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   })
 
