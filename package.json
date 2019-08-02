@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build:react": "cd src/client && yarn install && yarn build",
     "db:migrate": "npx sequelize-cli db:migrate",
+    "heroku-postbuild": "yarn build:react",
     "start": "nodemon --ignore 'src/client/**/*.js' ./bin/www",
     "test": "NODE_ENV=test jest ./src",
     "test:integ": "NODE_ENV=test jest src/**/*.integ.spec.js",
