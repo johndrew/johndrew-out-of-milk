@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "db:migrate": "npx sequelize-cli db:migrate",
-    "start": "nodemon ./bin/www",
-    "test": "NODE_ENV=test jest",
-    "test:integ": "NODE_ENV=test jest integ.spec",
-    "test:unit": "NODE_ENV=test jest unit.spec",
+    "start": "nodemon --ignore 'src/client/**/*.js' ./bin/www",
+    "test": "NODE_ENV=test jest ./src",
+    "test:integ": "NODE_ENV=test jest src/**/*.integ.spec.js",
+    "test:unit": "NODE_ENV=test jest src/**/*.unit.spec.js",
     "test:watch": "yarn test --watchAll"
   },
   "dependencies": {
