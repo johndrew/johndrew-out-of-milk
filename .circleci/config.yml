@@ -43,7 +43,8 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: cd src/client && yarn build
+      - run: cd src/client && ls
+      - run: yarn build
   deploy:
     docker:
       - image: buildpack-deps:trusty
