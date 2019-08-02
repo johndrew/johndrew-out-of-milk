@@ -32,9 +32,11 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      
-      # build react
-      - run: cd src/client && yarn build
+
+      # todo add cache for react build
+      - run:
+          name: React build
+          command: cd src/client && yarn install && yarn build
   deploy:
     docker:
       - image: buildpack-deps:trusty
