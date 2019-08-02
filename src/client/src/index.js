@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 
 const isProd = process.env.NODE_ENV === 'production';
 const client = new ApolloClient({
-  uri: isProd ? 'johndrew-out-of-milk.herokuapp.com' : "http://localhost:3000/graphql",
+  uri: isProd ? 'johndrew-out-of-milk.herokuapp.com/graphql' : "http://localhost:3000/graphql",
 });
 
 ReactDOM.render(
